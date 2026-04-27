@@ -1,5 +1,7 @@
 // import Driveable interface
 import Driveable from '../interfaces/Driveable.js';
+// import Chalk for color-coded terminal output
+import chalk from 'chalk';
 
 // Vehicle class that implements Driveable interface
 class Vehicle implements Driveable {
@@ -15,14 +17,14 @@ class Vehicle implements Driveable {
 
   // Method to print vehicle details
   printDetails(): void {
-    console.log(`Vehicle started: ${this.started}`);
-    console.log(`Vehicle current speed: ${this.currentSpeed} mph`);
+    console.log(chalk.cyan('Vehicle started:') + ` ${this.started}`);
+    console.log(chalk.cyan('Vehicle current speed:') + ` ${this.currentSpeed} mph`);
   }
 
   // Method to start the vehicle
   start(): void {
     this.started = true;
-    console.log('Vehicle started');
+    console.log(chalk.green.bold('Vehicle started'));
   }
 
   // Method to accelerate the vehicle
@@ -30,9 +32,9 @@ class Vehicle implements Driveable {
     // Check if the vehicle is started
     if (this.started) {
       this.currentSpeed += change;
-      console.log(`Vehicle accelerated to ${this.currentSpeed} mph`);
+      console.log(chalk.white.bold(`Vehicle accelerated to ${this.currentSpeed} mph`));
     } else {
-      console.log('Start the vehicle first');
+      console.log(chalk.red.bold('Start the vehicle first'));
     }
   }
 
@@ -41,9 +43,9 @@ class Vehicle implements Driveable {
     // Check if the vehicle is started
     if (this.started) {
       this.currentSpeed -= change;
-      console.log(`Vehicle decelerated to ${this.currentSpeed} mph`);
+      console.log(chalk.white.bold(`Vehicle decelerated to ${this.currentSpeed} mph`));
     } else {
-      console.log('Start the vehicle first');
+      console.log(chalk.red.bold('Start the vehicle first'));
     }
   }
 
@@ -51,16 +53,16 @@ class Vehicle implements Driveable {
   stop(): void {
     this.currentSpeed = 0;
     this.started = false;
-    console.log('Vehicle stopped');
+    console.log(chalk.yellow.bold('Vehicle stopped'));
   }
 
   // Method to turn the vehicle
   turn(direction: string): void {
     // Check if the vehicle is started
     if (this.started) {
-      console.log(`Vehicle turned ${direction}`);
+      console.log(chalk.white.bold(`Vehicle turned ${direction}`));
     } else {
-      console.log('Start the vehicle first');
+      console.log(chalk.red.bold('Start the vehicle first'));
     }
   }
 
@@ -68,9 +70,9 @@ class Vehicle implements Driveable {
   reverse(): void {
     // Check if the vehicle is started
     if (this.started) {
-      console.log('Vehicle reversed');
+      console.log(chalk.white.bold('Vehicle reversed'));
     } else {
-      console.log('Start the vehicle first');
+      console.log(chalk.red.bold('Start the vehicle first'));
     }
   }
 }

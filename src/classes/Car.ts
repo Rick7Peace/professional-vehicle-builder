@@ -1,6 +1,8 @@
 // Importing Vehicle and Wheel classes
 import Vehicle from './Vehicle.js';
 import Wheel from './Wheel.js';
+// import Chalk for color-coded terminal output
+import chalk from 'chalk';
 
 // Car class that extends Vehicle class
 class Car extends Vehicle {
@@ -51,27 +53,26 @@ class Car extends Vehicle {
     // Call the printDetails method of the parent class, Vehicle
     super.printDetails();
 
-    // Print details of the Car class
-    console.log(`VIN: ${this.vin}`);
-    console.log(`Color: ${this.color}`);
-    console.log(`Make: ${this.make}`);
-    console.log(`Model: ${this.model}`);
-    console.log(`Year: ${this.year}`);
-    console.log(`Weight: ${this.weight} lbs`);
-    console.log(`Top Speed: ${this.topSpeed} mph`);
-
-    // Print details of the wheels
+    // Print details of the Car class — cyan labels, magenta values for vehicle identity
+    console.log(chalk.cyan('VIN:') + ` ${chalk.magenta(this.vin)}`);
+    console.log(chalk.cyan('Color:') + ` ${this.color}`);
+    console.log(chalk.cyan('Make:') + ` ${this.make}`);
+    console.log(chalk.cyan('Model:') + ` ${this.model}`);
+    console.log(chalk.cyan('Year:') + ` ${this.year}`);
+    console.log(chalk.cyan('Weight:') + ` ${this.weight} lbs`);
+    console.log(chalk.cyan('Top Speed:') +` ${this.topSpeed} mph`);
+    // Print details of the Car class — cyan labels, magenta values for vehicle identity
     console.log(
-      `Wheel 1: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
+      chalk.cyan('Wheel 1:') + ` ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
     );
     console.log(
-      `Wheel 2: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
+      chalk.cyan('Wheel 2:') + ` ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
     );
     console.log(
-      `Wheel 3: ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`
+      chalk.cyan('Wheel 3:') + ` ${this.wheels[2].getDiameter} inch with a ${this.wheels[2].getTireBrand} tire`
     );
     console.log(
-      `Wheel 4: ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`
+      chalk.cyan('Wheel 4:') + ` ${this.wheels[3].getDiameter} inch with a ${this.wheels[3].getTireBrand} tire`
     );
   }
 }
