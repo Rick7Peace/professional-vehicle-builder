@@ -4,38 +4,22 @@ import Truck from "./Truck.js";
 import Car from "./Car.js";
 import Motorbike from "./Motorbike.js";
 import Wheel from "./Wheel.js";
+// import Chalk for color-coded terminal output
+import chalk from 'chalk';
 
 // define the Cli class
 class Cli {
-  // ============================================================
-  // UNION TYPE: (Car | Truck | Motorbike)[]
-  // ============================================================
-  // The original starter code only accepted Car[].
-  // By using the union operator "|", we tell TypeScript:
-  // "This array can hold ANY mix of Cars, Trucks, and Motorbikes"
-  //
-  // Real-world analogy: A parking garage doesn't have separate
-  // floors for each vehicle type — it holds all of them in one
-  // structure. The union type IS that parking garage.
-  //
-  // Interview Q: "What is a union type in TypeScript?"
-  // Answer: "A union type allows a variable to hold one of several
-  //   types. It's declared with the pipe operator. TypeScript then
-  //   requires type guards (instanceof checks) before accessing
-  //   type-specific properties, ensuring type safety at runtime."
-  // ============================================================
+  // Union type array — holds any mix of Cars, Trucks, and Motorbikes
   vehicles: (Car | Truck | Motorbike)[];
   selectedVehicleVin: string | undefined;
   exit: boolean = false;
 
-  // Constructor now accepts the union type array
   constructor(vehicles: (Car | Truck | Motorbike)[]) {
     this.vehicles = vehicles;
   }
 
   // static method to generate a vin
   static generateVin(): string {
-    // return a random string
     return (
       Math.random().toString(36).substring(2, 15) +
       Math.random().toString(36).substring(2, 15)
@@ -49,7 +33,7 @@ class Cli {
         {
           type: 'list',
           name: 'selectedVehicleVin',
-          message: 'Select a vehicle to perform an action on',
+          message: chalk.yellow('Select a vehicle to perform an action on'),
           choices: this.vehicles.map((vehicle) => {
             return {
               name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
@@ -59,9 +43,7 @@ class Cli {
         },
       ])
       .then((answers) => {
-        // set the selectedVehicleVin to the vin of the selected vehicle
         this.selectedVehicleVin = answers.selectedVehicleVin;
-        // perform actions on the selected vehicle
         this.performActions();
       });
   }
@@ -73,8 +55,7 @@ class Cli {
         {
           type: 'list',
           name: 'vehicleType',
-          message: 'Select a vehicle type',
-          // Updated choices to include Truck and Motorbike
+          message: chalk.yellow('Select a vehicle type'),
           choices: ['Car', 'Truck', 'Motorbike'],
         },
       ])
@@ -96,32 +77,32 @@ class Cli {
         {
           type: 'input',
           name: 'color',
-          message: 'Enter Color',
+          message: chalk.yellow('Enter Color'),
         },
         {
           type: 'input',
           name: 'make',
-          message: 'Enter Make',
+          message: chalk.yellow('Enter Make'),
         },
         {
           type: 'input',
           name: 'model',
-          message: 'Enter Model',
+          message: chalk.yellow('Enter Model'),
         },
         {
           type: 'input',
           name: 'year',
-          message: 'Enter Year',
+          message: chalk.yellow('Enter Year'),
         },
         {
           type: 'input',
           name: 'weight',
-          message: 'Enter Weight',
+          message: chalk.yellow('Enter Weight'),
         },
         {
           type: 'input',
           name: 'topSpeed',
-          message: 'Enter Top Speed',
+          message: chalk.yellow('Enter Top Speed'),
         },
       ])
       .then((answers) => {
@@ -135,11 +116,10 @@ class Cli {
           parseInt(answers.topSpeed),
           []
         );
-        // push the car to the vehicles array
         this.vehicles.push(car);
-        // set the selectedVehicleVin to the vin of the car
         this.selectedVehicleVin = car.vin;
-        // perform actions on the car
+        // Confirm vehicle creation with green success message
+        console.log(chalk.green.bold(`\n🚗 ${answers.make} ${answers.model} created successfully!\n`));
         this.performActions();
       });
   }
@@ -151,45 +131,40 @@ class Cli {
         {
           type: 'input',
           name: 'color',
-          message: 'Enter Color',
+          message: chalk.yellow('Enter Color'),
         },
         {
           type: 'input',
           name: 'make',
-          message: 'Enter Make',
+          message: chalk.yellow('Enter Make'),
         },
         {
           type: 'input',
           name: 'model',
-          message: 'Enter Model',
+          message: chalk.yellow('Enter Model'),
         },
         {
           type: 'input',
           name: 'year',
-          message: 'Enter Year',
+          message: chalk.yellow('Enter Year'),
         },
         {
           type: 'input',
           name: 'weight',
-          message: 'Enter Weight',
+          message: chalk.yellow('Enter Weight'),
         },
         {
           type: 'input',
           name: 'topSpeed',
-          message: 'Enter Top Speed',
+          message: chalk.yellow('Enter Top Speed'),
         },
         {
           type: 'input',
           name: 'towingCapacity',
-          message: 'Enter Towing Capacity',
+          message: chalk.yellow('Enter Towing Capacity'),
         },
       ])
       .then((answers) => {
-        // ============================================================
-        // Create a new Truck using the same pattern as createCar()
-        // Note: Truck constructor takes an extra parameter — towingCapacity
-        // This fulfills: "Truck class must prompt for details that Car doesn't"
-        // ============================================================
         const truck = new Truck(
           Cli.generateVin(),
           answers.color,
@@ -198,14 +173,13 @@ class Cli {
           parseInt(answers.year),
           parseInt(answers.weight),
           parseInt(answers.topSpeed),
-          [],  // empty array = Truck constructor creates 4 default wheels
+          [],
           parseInt(answers.towingCapacity)
         );
-        // push the truck to the vehicles array
         this.vehicles.push(truck);
-        // set the selectedVehicleVin to the vin of the truck
         this.selectedVehicleVin = truck.vin;
-        // perform actions on the truck
+        // Confirm vehicle creation with green success message
+        console.log(chalk.green.bold(`\n🚛 ${answers.make} ${answers.model} created successfully!\n`));
         this.performActions();
       });
   }
@@ -217,60 +191,55 @@ class Cli {
         {
           type: 'input',
           name: 'color',
-          message: 'Enter Color',
+          message: chalk.yellow('Enter Color'),
         },
         {
           type: 'input',
           name: 'make',
-          message: 'Enter Make',
+          message: chalk.yellow('Enter Make'),
         },
         {
           type: 'input',
           name: 'model',
-          message: 'Enter Model',
+          message: chalk.yellow('Enter Model'),
         },
         {
           type: 'input',
           name: 'year',
-          message: 'Enter Year',
+          message: chalk.yellow('Enter Year'),
         },
         {
           type: 'input',
           name: 'weight',
-          message: 'Enter Weight',
+          message: chalk.yellow('Enter Weight'),
         },
         {
           type: 'input',
           name: 'topSpeed',
-          message: 'Enter Top Speed',
+          message: chalk.yellow('Enter Top Speed'),
         },
         {
           type: 'input',
           name: 'frontWheelDiameter',
-          message: 'Enter Front Wheel Diameter',
+          message: chalk.yellow('Enter Front Wheel Diameter'),
         },
         {
           type: 'input',
           name: 'frontWheelBrand',
-          message: 'Enter Front Wheel Brand',
+          message: chalk.yellow('Enter Front Wheel Brand'),
         },
         {
           type: 'input',
           name: 'rearWheelDiameter',
-          message: 'Enter Rear Wheel Diameter',
+          message: chalk.yellow('Enter Rear Wheel Diameter'),
         },
         {
           type: 'input',
           name: 'rearWheelBrand',
-          message: 'Enter Rear Wheel Brand',
+          message: chalk.yellow('Enter Rear Wheel Brand'),
         },
       ])
       .then((answers) => {
-        // ============================================================
-        // Motorbike has CUSTOM WHEELS — unlike Car/Truck
-        // The user specifies front and rear wheel details separately
-        // This fulfills: "Motorbike class must prompt for details that Car doesn't"
-        // ============================================================
         const motorbike = new Motorbike(
           Cli.generateVin(),
           answers.color,
@@ -290,39 +259,22 @@ class Cli {
             ),
           ]
         );
-        // push the motorbike to the vehicles array
         this.vehicles.push(motorbike);
-        // set the selectedVehicleVin to the vin of the motorbike
         this.selectedVehicleVin = motorbike.vin;
-        // perform actions on the motorbike
+        // Confirm vehicle creation with green success message
+        console.log(chalk.green.bold(`\n🏍️  ${answers.make} ${answers.model} created successfully!\n`));
         this.performActions();
       });
   }
 
-  // ============================================================
-  // findVehicleToTow — accepts a Truck parameter
-  // ============================================================
-  // Why pass the truck as a parameter? Because we need to:
-  // 1. Know WHICH truck is doing the towing (to call truck.tow())
-  // 2. Prevent the truck from towing itself
-  //
-  // This is DEPENDENCY INJECTION — instead of the method figuring
-  // out which truck to use, the caller GIVES it the truck.
-  //
-  // Interview Q: "What is dependency injection?"
-  // Answer: "Instead of a function creating or finding its own
-  //   dependencies, they're passed in from outside. This makes
-  //   the function more testable, reusable, and decoupled.
-  //   Here, findVehicleToTow doesn't search for the truck —
-  //   performActions() passes it in."
-  // ============================================================
+  // Prompts user to select a vehicle to tow — only called from a Truck
   findVehicleToTow(truck: Truck): void {
     inquirer
       .prompt([
         {
           type: 'list',
           name: 'vehicleToTow',
-          message: 'Select a vehicle to tow',
+          message: chalk.yellow('Select a vehicle to tow'),
           choices: this.vehicles.map((vehicle) => {
             return {
               name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
@@ -332,16 +284,11 @@ class Cli {
         },
       ])
       .then((answers) => {
-        // TYPE GUARD: instanceof check
-        // Can't tow yourself! Check if the selected vehicle IS the truck
         if (answers.vehicleToTow.vin === truck.vin) {
-          console.log('The truck cannot tow itself');
-          // Return to actions menu so user can try again
+          console.log(chalk.red.bold('The truck cannot tow itself'));
           this.performActions();
         } else {
-          // Tow the selected vehicle — calls Truck's tow() method
           truck.tow(answers.vehicleToTow);
-          // Return to actions menu
           this.performActions();
         }
       });
@@ -354,8 +301,7 @@ class Cli {
         {
           type: 'list',
           name: 'action',
-          message: 'Select an action',
-          // Added Tow and Wheelie options
+          message: chalk.yellow('Select an action'),
           choices: [
             'Print details',
             'Start vehicle',
@@ -373,100 +319,70 @@ class Cli {
         },
       ])
       .then((answers) => {
-        // perform the selected action
         if (answers.action === 'Print details') {
-          // find the selected vehicle and print its details
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].printDetails();
             }
           }
         } else if (answers.action === 'Start vehicle') {
-          // find the selected vehicle and start it
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].start();
             }
           }
         } else if (answers.action === 'Accelerate 5 MPH') {
-          // find the selected vehicle and accelerate it by 5 MPH
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].accelerate(5);
             }
           }
         } else if (answers.action === 'Decelerate 5 MPH') {
-          // find the selected vehicle and decelerate it by 5 MPH
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].decelerate(5);
             }
           }
         } else if (answers.action === 'Stop vehicle') {
-          // find the selected vehicle and stop it
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].stop();
             }
           }
         } else if (answers.action === 'Turn right') {
-          // find the selected vehicle and turn it right
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].turn('right');
             }
           }
         } else if (answers.action === 'Turn left') {
-          // find the selected vehicle and turn it left
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].turn('left');
             }
           }
         } else if (answers.action === 'Reverse') {
-          // find the selected vehicle and reverse it
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].reverse();
             }
           }
         }
-        // ============================================================
-        // TOW ACTION — Only available if selected vehicle is a Truck
-        // ============================================================
-        // instanceof is a TYPE GUARD — it narrows the type at runtime
-        // TypeScript knows that inside this block, the vehicle IS a Truck,
-        // so it allows us to call Truck-specific methods like tow()
-        //
-        // Interview Q: "What is a type guard in TypeScript?"
-        // Answer: "A type guard is a runtime check that narrows a union
-        //   type to a specific type within a code block. The instanceof
-        //   operator is a common type guard. After the check, TypeScript
-        //   knows the exact type and allows access to its specific
-        //   properties and methods."
-        // ============================================================
+        // Tow action — only available if selected vehicle is a Truck
         else if (answers.action === 'Tow') {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
-              // Extract to a local variable so TypeScript can narrow the type
-              // this.vehicles[i] stays as the union type even after instanceof,
-              // but a local const gets properly narrowed — a common TS pattern
               const selectedVehicle = this.vehicles[i];
               if (selectedVehicle instanceof Truck) {
-                // findVehicleToTow is async (uses inquirer), so we RETURN
-                // to prevent performActions() from being called twice
                 this.findVehicleToTow(selectedVehicle);
                 return;
               } else {
-                console.log('Only trucks can tow other vehicles');
+                console.log(chalk.red.bold('Only trucks can tow other vehicles'));
               }
             }
           }
         }
-        // ============================================================
-        // WHEELIE ACTION — Only available if selected vehicle is a Motorbike
-        // Same instanceof pattern as Tow — different type guard
-        // ============================================================
+        // Wheelie action — only available if selected vehicle is a Motorbike
         else if (answers.action === 'Wheelie') {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
@@ -474,20 +390,17 @@ class Cli {
               if (selectedVehicle instanceof Motorbike) {
                 selectedVehicle.wheelie();
               } else {
-                console.log('Only motorbikes can do a wheelie');
+                console.log(chalk.red.bold('Only motorbikes can do a wheelie'));
               }
             }
           }
         } else if (answers.action === 'Select or create another vehicle') {
-          // start the cli to return to the initial prompt
           this.startCli();
           return;
         } else {
-          // exit the cli if the user selects exit
           this.exit = true;
         }
         if (!this.exit) {
-          // if the user does not want to exit, perform actions on the selected vehicle
           this.performActions();
         }
       });
@@ -500,13 +413,11 @@ class Cli {
         {
           type: 'list',
           name: 'CreateOrSelect',
-          message:
-            'Would you like to create a new vehicle or perform an action on an existing vehicle?',
+          message: chalk.yellow('Would you like to create a new vehicle or perform an action on an existing vehicle?'),
           choices: ['Create a new vehicle', 'Select an existing vehicle'],
         },
       ])
       .then((answers) => {
-        // check if the user wants to create a new vehicle or select an existing vehicle
         if (answers.CreateOrSelect === 'Create a new vehicle') {
           this.createVehicle();
         } else {
