@@ -1,27 +1,13 @@
 // Importing Vehicle and Wheel classes
 import Vehicle from './Vehicle.js';
 import Wheel from './Wheel.js';
+// import Chalk for color-coded terminal output
+import chalk from 'chalk';
 
-// ============================================================
-// MOTORBIKE CLASS
-// ============================================================
-// Extends Vehicle — inherits all driving behavior
-// Does NOT implement AbleToTow — motorbikes can't tow!
-// This is the INTERFACE SEGREGATION principle (SOLID):
-//   Don't force a class to implement methods it doesn't need.
-//
-// Instead, Motorbike has a UNIQUE method: wheelie()
-// This demonstrates that subclasses can ADD behavior
-// beyond what the parent provides.
-//
-// Interview Q: "What is the Interface Segregation Principle?"
-// Answer: "Clients should not be forced to depend on interfaces
-//   they don't use. A Motorbike shouldn't implement AbleToTow
-//   just because Truck does. Each class implements only the
-//   contracts that make sense for its capabilities."
-// ============================================================
+// Motorbike class — extends Vehicle but does NOT implement AbleToTow
+// Has a unique wheelie() method that only Motorbike can perform
 class Motorbike extends Vehicle {
-  // Declare properties — same pattern as Car and Truck
+  // Motorbike-specific properties (Vehicle provides started, currentSpeed)
   vin: string;
   color: string;
   make: string;
@@ -31,7 +17,6 @@ class Motorbike extends Vehicle {
   topSpeed: number;
   wheels: Wheel[];
 
-  // Constructor accepts all Motorbike properties
   constructor(
     vin: string,
     color: string,
@@ -42,10 +27,9 @@ class Motorbike extends Vehicle {
     topSpeed: number,
     wheels: Wheel[]
   ) {
-    // Call Vehicle constructor — sets started=false, currentSpeed=0
+    // Initialize Vehicle base class (started=false, currentSpeed=0)
     super();
 
-    // Initialize Motorbike-specific properties
     this.vin = vin;
     this.color = color;
     this.make = make;
@@ -54,10 +38,7 @@ class Motorbike extends Vehicle {
     this.weight = weight;
     this.topSpeed = topSpeed;
 
-    // Motorbikes have exactly 2 wheels (not 4 like Car/Truck)
-    // This is a key difference the acceptance criteria requires:
-    // "Truck and Motorbike classes must prompt the user for details
-    //  that the Car class doesn't" — wheel count is one such detail
+    // Motorbikes require exactly 2 wheels — default if wrong count provided
     if (wheels.length !== 2) {
       this.wheels = [new Wheel(), new Wheel()];
     } else {
@@ -65,41 +46,31 @@ class Motorbike extends Vehicle {
     }
   }
 
-  // ============================================================
-  // wheelie() — Unique to Motorbike
-  // ============================================================
-  // This fulfills the acceptance criteria:
-  // "The Motorbike class must allow the user to implement an action
-  //  that the Car and Truck classes cannot."
-  //
-  // In OOP terms, this is a method that EXISTS ONLY on the subclass.
-  // The parent (Vehicle) doesn't have it. Car doesn't have it.
-  // Only Motorbike can do a wheelie — just like in real life.
-  // ============================================================
+  // Unique to Motorbike — Car and Truck cannot do this
   wheelie(): void {
-    console.log(`Motorbike ${this.make} ${this.model} is doing a wheelie!`);
+    console.log(chalk.green.bold(`Motorbike ${this.make} ${this.model} is doing a wheelie!`));
   }
 
-  // Override printDetails from Vehicle — same pattern as Car/Truck
+  // Override Vehicle's printDetails — adds Motorbike-specific info
   override printDetails(): void {
-    // Call parent's printDetails for started/speed info
+    // Parent prints started status and current speed (already colored)
     super.printDetails();
 
-    // Print Motorbike-specific details
-    console.log(`VIN: ${this.vin}`);
-    console.log(`Color: ${this.color}`);
-    console.log(`Make: ${this.make}`);
-    console.log(`Model: ${this.model}`);
-    console.log(`Year: ${this.year}`);
-    console.log(`Weight: ${this.weight} lbs`);
-    console.log(`Top Speed: ${this.topSpeed} mph`);
+    // Motorbike-specific details — cyan labels, magenta VIN
+    console.log(chalk.cyan('VIN:') + ` ${chalk.magenta(this.vin)}`);
+    console.log(chalk.cyan('Color:') + ` ${this.color}`);
+    console.log(chalk.cyan('Make:') + ` ${this.make}`);
+    console.log(chalk.cyan('Model:') + ` ${this.model}`);
+    console.log(chalk.cyan('Year:') + ` ${this.year}`);
+    console.log(chalk.cyan('Weight:') + ` ${this.weight} lbs`);
+    console.log(chalk.cyan('Top Speed:') + ` ${this.topSpeed} mph`);
 
     // Only 2 wheels for a motorbike
     console.log(
-      `Front Wheel: ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
+      chalk.cyan('Front Wheel:') + ` ${this.wheels[0].getDiameter} inch with a ${this.wheels[0].getTireBrand} tire`
     );
     console.log(
-      `Rear Wheel: ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
+      chalk.cyan('Rear Wheel:') + ` ${this.wheels[1].getDiameter} inch with a ${this.wheels[1].getTireBrand} tire`
     );
   }
 }
