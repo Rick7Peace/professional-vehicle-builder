@@ -4,6 +4,21 @@ import Car from "./classes/Car.js";
 import Motorbike from "./classes/Motorbike.js";
 import Wheel from "./classes/Wheel.js";
 import Cli from "./classes/Cli.js";
+// import Chalk for color-coded terminal output
+import chalk from 'chalk';
+
+// ASCII art startup banner
+console.log(chalk.cyan.bold(`
+╔══════════════════════════════════════════════════════╗
+║                                                      ║
+║   🚗  PROFESSIONAL VEHICLE BUILDER  🚛              ║
+║                                                      ║
+║   TypeScript • OOP • CLI                             ║
+║   Built by Ricardo Marmolejo                         ║
+║                                                      ║
+╚══════════════════════════════════════════════════════╝
+`));
+console.log(chalk.white('  Welcome! Create and manage your vehicle garage.\n'));
 
 // create an array of vehicles
 const vehicles = [];
