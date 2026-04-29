@@ -7,6 +7,37 @@ import Wheel from "./Wheel.js";
 // import Chalk for color-coded terminal output
 import chalk from 'chalk';
 
+// ============================================================
+// REUSABLE VALIDATORS — DRY principle
+// ============================================================
+// These are used across createCar, createTruck, createMotorbike
+// so we define them once and reuse. Same concept as shared
+// utility functions in a real codebase — you'd see these in a
+// utils/ or helpers/ folder at any engineering job.
+// ============================================================
+const validateNotEmpty = (input: string): string | true => {
+  if (input.trim() === '') {
+    return chalk.red('This field cannot be empty');
+  }
+  return true;
+};
+
+const validateYear = (input: string): string | true => {
+  const num = parseInt(input);
+  if (isNaN(num) || num < 1886 || num > 2027) {
+    return chalk.red('Please enter a valid year (1886-2027)');
+  }
+  return true;
+};
+
+const validatePositiveNumber = (input: string): string | true => {
+  const num = parseInt(input);
+  if (isNaN(num) || num <= 0) {
+    return chalk.red('Please enter a positive number');
+  }
+  return true;
+};
+
 // define the Cli class
 class Cli {
   // Union type array — holds any mix of Cars, Trucks, and Motorbikes
@@ -78,31 +109,37 @@ class Cli {
           type: 'input',
           name: 'color',
           message: chalk.yellow('Enter Color'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'make',
           message: chalk.yellow('Enter Make'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'model',
           message: chalk.yellow('Enter Model'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'year',
           message: chalk.yellow('Enter Year'),
+          validate: validateYear,
         },
         {
           type: 'input',
           name: 'weight',
-          message: chalk.yellow('Enter Weight'),
+          message: chalk.yellow('Enter Weight (lbs)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'topSpeed',
-          message: chalk.yellow('Enter Top Speed'),
+          message: chalk.yellow('Enter Top Speed (mph)'),
+          validate: validatePositiveNumber,
         },
       ])
       .then((answers) => {
@@ -118,7 +155,6 @@ class Cli {
         );
         this.vehicles.push(car);
         this.selectedVehicleVin = car.vin;
-        // Confirm vehicle creation with green success message
         console.log(chalk.green.bold(`\n🚗 ${answers.make} ${answers.model} created successfully!\n`));
         this.performActions();
       });
@@ -132,36 +168,43 @@ class Cli {
           type: 'input',
           name: 'color',
           message: chalk.yellow('Enter Color'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'make',
           message: chalk.yellow('Enter Make'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'model',
           message: chalk.yellow('Enter Model'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'year',
           message: chalk.yellow('Enter Year'),
+          validate: validateYear,
         },
         {
           type: 'input',
           name: 'weight',
-          message: chalk.yellow('Enter Weight'),
+          message: chalk.yellow('Enter Weight (lbs)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'topSpeed',
-          message: chalk.yellow('Enter Top Speed'),
+          message: chalk.yellow('Enter Top Speed (mph)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'towingCapacity',
-          message: chalk.yellow('Enter Towing Capacity'),
+          message: chalk.yellow('Enter Towing Capacity (lbs)'),
+          validate: validatePositiveNumber,
         },
       ])
       .then((answers) => {
@@ -178,7 +221,6 @@ class Cli {
         );
         this.vehicles.push(truck);
         this.selectedVehicleVin = truck.vin;
-        // Confirm vehicle creation with green success message
         console.log(chalk.green.bold(`\n🚛 ${answers.make} ${answers.model} created successfully!\n`));
         this.performActions();
       });
@@ -192,51 +234,61 @@ class Cli {
           type: 'input',
           name: 'color',
           message: chalk.yellow('Enter Color'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'make',
           message: chalk.yellow('Enter Make'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'model',
           message: chalk.yellow('Enter Model'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'year',
           message: chalk.yellow('Enter Year'),
+          validate: validateYear,
         },
         {
           type: 'input',
           name: 'weight',
-          message: chalk.yellow('Enter Weight'),
+          message: chalk.yellow('Enter Weight (lbs)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'topSpeed',
-          message: chalk.yellow('Enter Top Speed'),
+          message: chalk.yellow('Enter Top Speed (mph)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'frontWheelDiameter',
-          message: chalk.yellow('Enter Front Wheel Diameter'),
+          message: chalk.yellow('Enter Front Wheel Diameter (inches)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'frontWheelBrand',
           message: chalk.yellow('Enter Front Wheel Brand'),
+          validate: validateNotEmpty,
         },
         {
           type: 'input',
           name: 'rearWheelDiameter',
-          message: chalk.yellow('Enter Rear Wheel Diameter'),
+          message: chalk.yellow('Enter Rear Wheel Diameter (inches)'),
+          validate: validatePositiveNumber,
         },
         {
           type: 'input',
           name: 'rearWheelBrand',
           message: chalk.yellow('Enter Rear Wheel Brand'),
+          validate: validateNotEmpty,
         },
       ])
       .then((answers) => {
@@ -261,7 +313,6 @@ class Cli {
         );
         this.vehicles.push(motorbike);
         this.selectedVehicleVin = motorbike.vin;
-        // Confirm vehicle creation with green success message
         console.log(chalk.green.bold(`\n🏍️  ${answers.make} ${answers.model} created successfully!\n`));
         this.performActions();
       });
