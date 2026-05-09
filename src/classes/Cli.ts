@@ -362,6 +362,7 @@ class Cli {
             'Turn right',
             'Turn left',
             'Reverse',
+            'Refuel',
             'Tow',
             'Wheelie',
             'Select or create another vehicle',
@@ -416,6 +417,12 @@ class Cli {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].reverse();
+            }
+          }
+        } else if (answers.action === 'Refuel') {
+          for (let i = 0; i < this.vehicles.length; i++) {
+            if (this.vehicles[i].vin === this.selectedVehicleVin) {
+              this.vehicles[i].refuel();
             }
           }
         }
