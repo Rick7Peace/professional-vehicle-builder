@@ -5,7 +5,8 @@ import Car from "./Car.js";
 import Motorbike from "./Motorbike.js";
 import Wheel from "./Wheel.js";
 // import Chalk for color-coded terminal output
-import chalk from 'chalk';
+import chalk from "chalk";
+import fs from "fs";
 
 // ============================================================
 // REUSABLE VALIDATORS — DRY principle
@@ -16,8 +17,8 @@ import chalk from 'chalk';
 // utils/ or helpers/ folder at any engineering job.
 // ============================================================
 const validateNotEmpty = (input: string): string | true => {
-  if (input.trim() === '') {
-    return chalk.red('This field cannot be empty');
+  if (input.trim() === "") {
+    return chalk.red("This field cannot be empty");
   }
   return true;
 };
@@ -25,7 +26,7 @@ const validateNotEmpty = (input: string): string | true => {
 const validateYear = (input: string): string | true => {
   const num = parseInt(input);
   if (isNaN(num) || num < 1886 || num > 2027) {
-    return chalk.red('Please enter a valid year (1886-2027)');
+    return chalk.red("Please enter a valid year (1886-2027)");
   }
   return true;
 };
@@ -33,7 +34,7 @@ const validateYear = (input: string): string | true => {
 const validatePositiveNumber = (input: string): string | true => {
   const num = parseInt(input);
   if (isNaN(num) || num <= 0) {
-    return chalk.red('Please enter a positive number');
+    return chalk.red("Please enter a positive number");
   }
   return true;
 };
@@ -62,9 +63,9 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'list',
-          name: 'selectedVehicleVin',
-          message: chalk.yellow('Select a vehicle to perform an action on'),
+          type: "list",
+          name: "selectedVehicleVin",
+          message: chalk.yellow("Select a vehicle to perform an action on"),
           choices: this.vehicles.map((vehicle) => {
             return {
               name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
@@ -84,18 +85,18 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'list',
-          name: 'vehicleType',
-          message: chalk.yellow('Select a vehicle type'),
-          choices: ['Car', 'Truck', 'Motorbike'],
+          type: "list",
+          name: "vehicleType",
+          message: chalk.yellow("Select a vehicle type"),
+          choices: ["Car", "Truck", "Motorbike"],
         },
       ])
       .then((answers) => {
-        if (answers.vehicleType === 'Car') {
+        if (answers.vehicleType === "Car") {
           this.createCar();
-        } else if (answers.vehicleType === 'Truck') {
+        } else if (answers.vehicleType === "Truck") {
           this.createTruck();
-        } else if (answers.vehicleType === 'Motorbike') {
+        } else if (answers.vehicleType === "Motorbike") {
           this.createMotorbike();
         }
       });
@@ -106,39 +107,39 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'input',
-          name: 'color',
-          message: chalk.yellow('Enter Color'),
+          type: "input",
+          name: "color",
+          message: chalk.yellow("Enter Color"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'make',
-          message: chalk.yellow('Enter Make'),
+          type: "input",
+          name: "make",
+          message: chalk.yellow("Enter Make"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'model',
-          message: chalk.yellow('Enter Model'),
+          type: "input",
+          name: "model",
+          message: chalk.yellow("Enter Model"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'year',
-          message: chalk.yellow('Enter Year'),
+          type: "input",
+          name: "year",
+          message: chalk.yellow("Enter Year"),
           validate: validateYear,
         },
         {
-          type: 'input',
-          name: 'weight',
-          message: chalk.yellow('Enter Weight (lbs)'),
+          type: "input",
+          name: "weight",
+          message: chalk.yellow("Enter Weight (lbs)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'topSpeed',
-          message: chalk.yellow('Enter Top Speed (mph)'),
+          type: "input",
+          name: "topSpeed",
+          message: chalk.yellow("Enter Top Speed (mph)"),
           validate: validatePositiveNumber,
         },
       ])
@@ -155,7 +156,12 @@ class Cli {
         );
         this.vehicles.push(car);
         this.selectedVehicleVin = car.vin;
-        console.log(chalk.green.bold(`\n🚗 ${answers.make} ${answers.model} created successfully!\n`));
+        console.log(
+          chalk.green.bold(
+            `\n🚗 ${answers.make} ${answers.model} created successfully!\n`
+          )
+        );
+        this.saveGarage();
         this.performActions();
       });
   }
@@ -165,45 +171,45 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'input',
-          name: 'color',
-          message: chalk.yellow('Enter Color'),
+          type: "input",
+          name: "color",
+          message: chalk.yellow("Enter Color"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'make',
-          message: chalk.yellow('Enter Make'),
+          type: "input",
+          name: "make",
+          message: chalk.yellow("Enter Make"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'model',
-          message: chalk.yellow('Enter Model'),
+          type: "input",
+          name: "model",
+          message: chalk.yellow("Enter Model"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'year',
-          message: chalk.yellow('Enter Year'),
+          type: "input",
+          name: "year",
+          message: chalk.yellow("Enter Year"),
           validate: validateYear,
         },
         {
-          type: 'input',
-          name: 'weight',
-          message: chalk.yellow('Enter Weight (lbs)'),
+          type: "input",
+          name: "weight",
+          message: chalk.yellow("Enter Weight (lbs)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'topSpeed',
-          message: chalk.yellow('Enter Top Speed (mph)'),
+          type: "input",
+          name: "topSpeed",
+          message: chalk.yellow("Enter Top Speed (mph)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'towingCapacity',
-          message: chalk.yellow('Enter Towing Capacity (lbs)'),
+          type: "input",
+          name: "towingCapacity",
+          message: chalk.yellow("Enter Towing Capacity (lbs)"),
           validate: validatePositiveNumber,
         },
       ])
@@ -221,7 +227,12 @@ class Cli {
         );
         this.vehicles.push(truck);
         this.selectedVehicleVin = truck.vin;
-        console.log(chalk.green.bold(`\n🚛 ${answers.make} ${answers.model} created successfully!\n`));
+        console.log(
+          chalk.green.bold(
+            `\n🚛 ${answers.make} ${answers.model} created successfully!\n`
+          )
+        );
+        this.saveGarage();
         this.performActions();
       });
   }
@@ -231,63 +242,63 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'input',
-          name: 'color',
-          message: chalk.yellow('Enter Color'),
+          type: "input",
+          name: "color",
+          message: chalk.yellow("Enter Color"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'make',
-          message: chalk.yellow('Enter Make'),
+          type: "input",
+          name: "make",
+          message: chalk.yellow("Enter Make"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'model',
-          message: chalk.yellow('Enter Model'),
+          type: "input",
+          name: "model",
+          message: chalk.yellow("Enter Model"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'year',
-          message: chalk.yellow('Enter Year'),
+          type: "input",
+          name: "year",
+          message: chalk.yellow("Enter Year"),
           validate: validateYear,
         },
         {
-          type: 'input',
-          name: 'weight',
-          message: chalk.yellow('Enter Weight (lbs)'),
+          type: "input",
+          name: "weight",
+          message: chalk.yellow("Enter Weight (lbs)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'topSpeed',
-          message: chalk.yellow('Enter Top Speed (mph)'),
+          type: "input",
+          name: "topSpeed",
+          message: chalk.yellow("Enter Top Speed (mph)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'frontWheelDiameter',
-          message: chalk.yellow('Enter Front Wheel Diameter (inches)'),
+          type: "input",
+          name: "frontWheelDiameter",
+          message: chalk.yellow("Enter Front Wheel Diameter (inches)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'frontWheelBrand',
-          message: chalk.yellow('Enter Front Wheel Brand'),
+          type: "input",
+          name: "frontWheelBrand",
+          message: chalk.yellow("Enter Front Wheel Brand"),
           validate: validateNotEmpty,
         },
         {
-          type: 'input',
-          name: 'rearWheelDiameter',
-          message: chalk.yellow('Enter Rear Wheel Diameter (inches)'),
+          type: "input",
+          name: "rearWheelDiameter",
+          message: chalk.yellow("Enter Rear Wheel Diameter (inches)"),
           validate: validatePositiveNumber,
         },
         {
-          type: 'input',
-          name: 'rearWheelBrand',
-          message: chalk.yellow('Enter Rear Wheel Brand'),
+          type: "input",
+          name: "rearWheelBrand",
+          message: chalk.yellow("Enter Rear Wheel Brand"),
           validate: validateNotEmpty,
         },
       ])
@@ -313,7 +324,12 @@ class Cli {
         );
         this.vehicles.push(motorbike);
         this.selectedVehicleVin = motorbike.vin;
-        console.log(chalk.green.bold(`\n🏍️  ${answers.make} ${answers.model} created successfully!\n`));
+        console.log(
+          chalk.green.bold(
+            `\n🏍️  ${answers.make} ${answers.model} created successfully!\n`
+          )
+        );
+        this.saveGarage();
         this.performActions();
       });
   }
@@ -323,9 +339,9 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'list',
-          name: 'vehicleToTow',
-          message: chalk.yellow('Select a vehicle to tow'),
+          type: "list",
+          name: "vehicleToTow",
+          message: chalk.yellow("Select a vehicle to tow"),
           choices: this.vehicles.map((vehicle) => {
             return {
               name: `${vehicle.vin} -- ${vehicle.make} ${vehicle.model}`,
@@ -336,7 +352,7 @@ class Cli {
       ])
       .then((answers) => {
         if (answers.vehicleToTow.vin === truck.vin) {
-          console.log(chalk.red.bold('The truck cannot tow itself'));
+          console.log(chalk.red.bold("The truck cannot tow itself"));
           this.performActions();
         } else {
           truck.tow(answers.vehicleToTow);
@@ -350,76 +366,76 @@ class Cli {
     inquirer
       .prompt([
         {
-          type: 'list',
-          name: 'action',
-          message: chalk.yellow('Select an action'),
+          type: "list",
+          name: "action",
+          message: chalk.yellow("Select an action"),
           choices: [
-            'Print details',
-            'Start vehicle',
-            'Accelerate 5 MPH',
-            'Decelerate 5 MPH',
-            'Stop vehicle',
-            'Turn right',
-            'Turn left',
-            'Reverse',
-            'Refuel',
-            'Tow',
-            'Wheelie',
-            'Select or create another vehicle',
-            'Exit',
+            "Print details",
+            "Start vehicle",
+            "Accelerate 5 MPH",
+            "Decelerate 5 MPH",
+            "Stop vehicle",
+            "Turn right",
+            "Turn left",
+            "Reverse",
+            "Refuel",
+            "Tow",
+            "Wheelie",
+            "Select or create another vehicle",
+            "Exit",
           ],
         },
       ])
       .then((answers) => {
-        if (answers.action === 'Print details') {
+        if (answers.action === "Print details") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].printDetails();
             }
           }
-        } else if (answers.action === 'Start vehicle') {
+        } else if (answers.action === "Start vehicle") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].start();
             }
           }
-        } else if (answers.action === 'Accelerate 5 MPH') {
+        } else if (answers.action === "Accelerate 5 MPH") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].accelerate(5);
             }
           }
-        } else if (answers.action === 'Decelerate 5 MPH') {
+        } else if (answers.action === "Decelerate 5 MPH") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].decelerate(5);
             }
           }
-        } else if (answers.action === 'Stop vehicle') {
+        } else if (answers.action === "Stop vehicle") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].stop();
             }
           }
-        } else if (answers.action === 'Turn right') {
+        } else if (answers.action === "Turn right") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
-              this.vehicles[i].turn('right');
+              this.vehicles[i].turn("right");
             }
           }
-        } else if (answers.action === 'Turn left') {
+        } else if (answers.action === "Turn left") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
-              this.vehicles[i].turn('left');
+              this.vehicles[i].turn("left");
             }
           }
-        } else if (answers.action === 'Reverse') {
+        } else if (answers.action === "Reverse") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].reverse();
             }
           }
-        } else if (answers.action === 'Refuel') {
+        } else if (answers.action === "Refuel") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               this.vehicles[i].refuel();
@@ -427,7 +443,7 @@ class Cli {
           }
         }
         // Tow action — only available if selected vehicle is a Truck
-        else if (answers.action === 'Tow') {
+        else if (answers.action === "Tow") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               const selectedVehicle = this.vehicles[i];
@@ -435,27 +451,30 @@ class Cli {
                 this.findVehicleToTow(selectedVehicle);
                 return;
               } else {
-                console.log(chalk.red.bold('Only trucks can tow other vehicles'));
+                console.log(
+                  chalk.red.bold("Only trucks can tow other vehicles")
+                );
               }
             }
           }
         }
         // Wheelie action — only available if selected vehicle is a Motorbike
-        else if (answers.action === 'Wheelie') {
+        else if (answers.action === "Wheelie") {
           for (let i = 0; i < this.vehicles.length; i++) {
             if (this.vehicles[i].vin === this.selectedVehicleVin) {
               const selectedVehicle = this.vehicles[i];
               if (selectedVehicle instanceof Motorbike) {
                 selectedVehicle.wheelie();
               } else {
-                console.log(chalk.red.bold('Only motorbikes can do a wheelie'));
+                console.log(chalk.red.bold("Only motorbikes can do a wheelie"));
               }
             }
           }
-        } else if (answers.action === 'Select or create another vehicle') {
+        } else if (answers.action === "Select or create another vehicle") {
           this.startCli();
           return;
         } else {
+          this.saveGarage();
           this.exit = true;
         }
         if (!this.exit) {
@@ -464,19 +483,61 @@ class Cli {
       });
   }
 
+  // Save all vehicles to garage.json for persistence
+  saveGarage(): void {
+    // Create data directory if it doesn't exist
+    if (!fs.existsSync("./data")) {
+      fs.mkdirSync("./data");
+    }
+
+    // Convert vehicles to JSON with type identifier
+    const garageData = this.vehicles.map((vehicle) => {
+      let type = "Car";
+      if (vehicle instanceof Truck) {
+        type = "Truck";
+      } else if (vehicle instanceof Motorbike) {
+        type = "Motorbike";
+      }
+
+      return {
+        type,
+        vin: vehicle.vin,
+        color: vehicle.color,
+        make: vehicle.make,
+        model: vehicle.model,
+        year: vehicle.year,
+        weight: vehicle.weight,
+        topSpeed: vehicle.topSpeed,
+        wheels: vehicle.wheels.map((w) => ({
+          diameter: w.getDiameter,
+          tireBrand: w.getTireBrand,
+        })),
+        // Only include towingCapacity for Trucks
+        ...(vehicle instanceof Truck && {
+          towingCapacity: vehicle.towingCapacity,
+        }),
+      };
+    });
+
+    fs.writeFileSync("./data/garage.json", JSON.stringify(garageData, null, 2));
+    console.log(chalk.green("  💾 Garage saved!"));
+  }
+
   // method to start the cli
   startCli(): void {
     inquirer
       .prompt([
         {
-          type: 'list',
-          name: 'CreateOrSelect',
-          message: chalk.yellow('Would you like to create a new vehicle or perform an action on an existing vehicle?'),
-          choices: ['Create a new vehicle', 'Select an existing vehicle'],
+          type: "list",
+          name: "CreateOrSelect",
+          message: chalk.yellow(
+            "Would you like to create a new vehicle or perform an action on an existing vehicle?"
+          ),
+          choices: ["Create a new vehicle", "Select an existing vehicle"],
         },
       ])
       .then((answers) => {
-        if (answers.CreateOrSelect === 'Create a new vehicle') {
+        if (answers.CreateOrSelect === "Create a new vehicle") {
           this.createVehicle();
         } else {
           this.chooseVehicle();
