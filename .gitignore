@@ -1,3 +1,4 @@
 node_modules/
 dist/
-.DS_Storedata/
+.DS_Store
+data/
