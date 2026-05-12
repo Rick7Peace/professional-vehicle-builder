@@ -10,12 +10,83 @@ class Vehicle implements Driveable {
   currentSpeed: number;
   fuelLevel: number;
 
+  // Optional properties - set by subclasses, used by dashboard
+  make?: string;
+  model?: string;
+  topSpeed?: number;
+
   // Constructor for the Vehicle class
   constructor() {
     this.started = false;
     this.currentSpeed = 0;
     this.fuelLevel = 100; // Full tank at creation
   }
+
+  // Visual dashboard - shows speed bar, fuel gauge, and status at a glance
+  displayDashboard(): void {
+    const name = `${this.make || "vehicle"} ${this.model || ""}`.trim();
+    const maxSpeed = this.topSpeed || 120;
+
+    // Build speed bar based on how close to top speed
+    const speedPercent = Math.min(this.currentSpeed / maxSpeed, 1);
+    const speedFilled = Math.round(speedPercent * 20);
+    const speedEmpty = 20 - speedFilled;
+    const speedBar = "█".repeat(speedFilled) + "░".repeat(speedEmpty);
+
+  // Color the speed bar based on how close to top speed
+  let coloredSpeedBar;
+  if (speedPercent > 0.8) {
+    coloredSpeedBar = chalk.red.bold(speedBar);
+  } else if (speedPercent > 0.5) {
+    coloredSpeedBar = chalk.yellow.bold(speedBar);
+  } else {
+    coloredSpeedBar = chalk.green.bold(speedBar);
+  }
+
+  // Fuel Bar - 20 characters wide
+  const fuelPercent = this.fuelLevel / 100;
+  const fuelFilled = Math.round(fuelPercent * 20);
+  const fuelEmpty = 20 - fuelFilled;
+  const fuelBar = "█".repeat(fuelFilled) + "░".repeat(fuelEmpty);
+
+  // Color the fuel bar based on level
+  let coloredFuelBar;
+  if (this.fuelLevel > 50) {
+    coloredFuelBar = chalk.green.bold(fuelBar);
+  } else if (this.fuelLevel > 20) {
+    coloredFuelBar = chalk.yellow.bold(fuelBar);
+  } else { 
+    coloredFuelBar = chalk.red.bold(fuelBar);
+  }
+
+  // status text
+  const status = this.started ? 
+  chalk.green.bold("running") : chalk.red.bold("Off");
+
+  // vehicle type emoji 
+  let emoji = "🚗"; // Default to car
+  if (
+    name.toLowerCase().includes("truck") ||
+    name.toLowerCase().includes("f-150") ||
+    name.toLowerCase().includes("silverado")
+  ) {
+    emoji = "🚛";
+  } else if (
+    name.toLowerCase().includes("motorbike") ||
+    name.toLowerCase().includes("sportster") ||
+    name.toLowerCase().includes("ninja")
+  ) {
+    emoji = "🏍️";
+  }
+  
+  // Print the dashboard
+  console.log(chalk.cyan("\n┌──────────────────────────────────────────┐"));
+  console.log(chalk.cyan("│") + `  ${emoji}  ${chalk.white.bold(name)}`.padEnd(50) + chalk.cyan("│"));
+  console.log(chalk.cyan("│") + `  Speed: ${coloredSpeedBar}  ${String(this.currentSpeed).padStart(3)} mph`.padEnd(50) + chalk.cyan("│"));
+  console.log(chalk.cyan("│") + `  Fuel:  ${coloredFuelBar}  ${String(this.fuelLevel).padStart(3)}%`.padEnd(50) + chalk.cyan("│"));
+  console.log(chalk.cyan("│") + `  Status: ${status}`.padEnd(50) + chalk.cyan("│"));
+  console.log(chalk.cyan("└──────────────────────────────────────────┘\n"));
+}
 
   // Method to print vehicle details
   printDetails(): void {

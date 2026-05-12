@@ -10,11 +10,11 @@ class Motorbike extends Vehicle {
   // Motorbike-specific properties (Vehicle provides started, currentSpeed)
   vin: string;
   color: string;
-  make: string;
-  model: string;
+  override make: string;
+  override model: string;
   year: number;
   weight: number;
-  topSpeed: number;
+  override topSpeed: number;
   wheels: Wheel[];
 
   constructor(

@@ -384,7 +384,7 @@ class Cli {
             "Select or create another vehicle",
             "Exit",
           ],
-        },
+        },        
       ])
       .then((answers) => {
         if (answers.action === "Print details") {
@@ -478,9 +478,18 @@ class Cli {
           this.exit = true;
         }
         if (!this.exit) {
+          this.showDashboard();
           this.performActions();
-        }
-      });
+        }      });
+  }
+
+  // Show dashboard for the currently selected vehicle
+  showDashboard(): void {
+    for (let i = 0; i < this.vehicles.length; i++) {
+      if (this.vehicles[i].vin === this.selectedVehicleVin) {
+        this.vehicles[i].displayDashboard();
+      }
+    }
   }
 
   // Save all vehicles to garage.json for persistence
